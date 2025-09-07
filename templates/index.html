@@ -7,7 +7,7 @@
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
   <style>
     :root {
-      /* Dark theme variables */
+      
       --bg-primary: #0d1117;
       --bg-secondary: #161b22;
       --bg-tertiary: #21262d;
@@ -23,7 +23,7 @@
     }
     
     [data-theme="light"] {
-      /* Light theme variables */
+      
       --bg-primary: #ffffff;
       --bg-secondary: #f6f8fa;
       --bg-tertiary: #e1e4e8;
@@ -467,7 +467,7 @@
       display: flex;
     }
 
-    /* Modal for displaying session details */
+   
     .modal {
       display: none;
       position: fixed;
@@ -633,7 +633,7 @@
       </div>
 
       <div class="editor-container">
-        <!-- Code Analyzer Section (Default) -->
+        
         <div id="analyzerSection" class="content-section">
           <div class="editor-header">
             <h1 class="editor-title">Python Code Debugger</h1>
@@ -751,7 +751,7 @@ print(fibonacci(10))"
           </div>
         </div>
 
-        <!-- Recent Sessions Section -->
+        
         <div id="sessionsSection" class="content-section" style="display: none;">
           <div class="editor-header">
             <h1 class="editor-title">Recent Sessions</h1>
@@ -774,7 +774,7 @@ print(fibonacci(10))"
           </div>
         </div>
 
-        <!-- Saved Snippets Section -->
+       
         <div id="snippetsSection" class="content-section" style="display: none;">
           <div class="editor-header">
             <h1 class="editor-title">Saved Snippets</h1>
@@ -797,7 +797,7 @@ print(fibonacci(10))"
           </div>
         </div>
 
-        <!-- Preferences Section -->
+        
         <div id="preferencesSection" class="content-section" style="display: none;">
           <div class="editor-header">
             <h1 class="editor-title">Preferences</h1>
@@ -843,7 +843,7 @@ print(fibonacci(10))"
           </div>
         </div>
 
-        <!-- Shortcuts Section -->
+       
         <div id="shortcutsSection" class="content-section" style="display: none;">
           <div class="editor-header">
             <h1 class="editor-title">Keyboard Shortcuts</h1>
@@ -881,7 +881,7 @@ print(fibonacci(10))"
   </div>
 
   <script>
-    // Theme management
+   
     let currentTheme = 'dark';
     
     function toggleTheme() {
@@ -898,11 +898,11 @@ print(fibonacci(10))"
         currentTheme = 'dark';
       }
       
-      // Save theme preference
+      
       localStorage.setItem('theme', currentTheme);
     }
     
-    // Load saved theme on page load
+  
     function loadTheme() {
       const savedTheme = localStorage.getItem('theme') || 'dark';
       if (savedTheme === 'light') {
@@ -910,23 +910,23 @@ print(fibonacci(10))"
       }
     }
 
-    // Section management
+    
     function showSection(sectionName) {
-      // Hide all sections
+     
       const sections = document.querySelectorAll('.content-section');
       sections.forEach(section => section.style.display = 'none');
       
-      // Remove active class from all nav items
+      
       const navItems = document.querySelectorAll('.nav-item');
       navItems.forEach(item => item.classList.remove('active'));
       
-      // Show selected section
+      
       document.getElementById(sectionName + 'Section').style.display = 'block';
       
-      // Add active class to clicked nav item
+     
       event.target.closest('.nav-item').classList.add('active');
       
-      // Update breadcrumb
+      
       const breadcrumbMap = {
         'analyzer': 'Debug Session',
         'sessions': 'Recent Sessions',
@@ -937,7 +937,7 @@ print(fibonacci(10))"
       document.getElementById('currentSection').textContent = breadcrumbMap[sectionName];
     }
 
-    // Code editor functionality
+    
     const textarea = document.getElementById('buggy_code');
     const lineNumbers = document.getElementById('lineNumbers');
     
@@ -952,10 +952,10 @@ print(fibonacci(10))"
       lineNumbers.scrollTop = textarea.scrollTop;
     });
 
-    // Code formatting function
+    
     function formatCode() {
       const code = textarea.value;
-      // Simple code formatting (basic indentation)
+      
       const lines = code.split('\n');
       let formattedLines = [];
       let indentLevel = 0;
@@ -963,17 +963,17 @@ print(fibonacci(10))"
       lines.forEach(line => {
         const trimmedLine = line.trim();
         
-        // Decrease indent for closing brackets/statements
+       
         if (trimmedLine.includes('}') || trimmedLine.includes(']') || trimmedLine.includes(')') || 
             trimmedLine.startsWith('except') || trimmedLine.startsWith('elif') || 
             trimmedLine.startsWith('else') || trimmedLine.startsWith('finally')) {
           indentLevel = Math.max(0, indentLevel - 1);
         }
         
-        // Add formatted line
+        
         formattedLines.push('    '.repeat(indentLevel) + trimmedLine);
         
-        // Increase indent for opening brackets/statements
+        
         if (trimmedLine.endsWith(':') || trimmedLine.includes('{') || 
             trimmedLine.includes('[') || trimmedLine.includes('(')) {
           indentLevel++;
@@ -985,7 +985,7 @@ print(fibonacci(10))"
       showNotification('Code formatted successfully!');
     }
 
-    // Clear code function
+    
     function clearCode() {
       if (confirm('Are you sure you want to clear all code?')) {
         textarea.value = '';
@@ -994,14 +994,13 @@ print(fibonacci(10))"
       }
     }
 
-    // Font size adjustment
     function changeFontSize(size) {
       textarea.style.fontSize = size + 'px';
       lineNumbers.style.fontSize = (size - 2) + 'px';
       showNotification(`Font size changed to ${size}px`);
     }
 
-    // Session management
+  
     function loadSession(sessionId) {
       const sessions = {
         'fibonacci_debug': `def fibonacci(n):
@@ -1040,7 +1039,7 @@ headers = scrape_website(url)`
       }
     }
 
-    // Snippet management
+   
     function loadSnippet(snippetId) {
       const snippets = {
         'fibonacci': `def fibonacci(n):
@@ -1092,7 +1091,7 @@ headers = scrape_website(url)`
       }
     }
 
-    // Notification system
+    
     function showNotification(message) {
       const notification = document.createElement('div');
       notification.style.cssText = `
@@ -1111,7 +1110,7 @@ headers = scrape_website(url)`
       `;
       notification.textContent = message;
       
-      // Add slide-in animation
+      
       const style = document.createElement('style');
       style.textContent = `
         @keyframes slideIn {
@@ -1129,34 +1128,33 @@ headers = scrape_website(url)`
       }, 3000);
     }
 
-    // Keyboard shortcuts
+    
     document.addEventListener('keydown', function(e) {
-      // Ctrl + Shift + F - Format Code
+      
       if (e.ctrlKey && e.shiftKey && e.key === 'F') {
         e.preventDefault();
         formatCode();
       }
       
-      // Ctrl + Shift + K - Clear Editor
+     
       if (e.ctrlKey && e.shiftKey && e.key === 'K') {
         e.preventDefault();
         clearCode();
       }
       
-      // Ctrl + Enter - Analyze Code
+    
       if (e.ctrlKey && e.key === 'Enter') {
         e.preventDefault();
         document.getElementById('debugForm').dispatchEvent(new Event('submit'));
       }
       
-      // Ctrl + Shift + T - Toggle Theme
       if (e.ctrlKey && e.shiftKey && e.key === 'T') {
         e.preventDefault();
         toggleTheme();
       }
     });
 
-    // Form validation and submission
+    
     document.getElementById('debugForm').addEventListener('submit', function(e) {
       const code = document.getElementById('buggy_code').value.trim();
       const level = document.querySelector('input[name="student_level"]:checked');
@@ -1173,41 +1171,39 @@ headers = scrape_website(url)`
         return;
       }
       
-      // Show loading state
+      
       const btn = document.querySelector('.analyze-btn');
       const originalContent = btn.innerHTML;
       btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Analyzing...';
       btn.disabled = true;
       
-      // Simulate analysis process
+     
       setTimeout(() => {
         btn.innerHTML = originalContent;
         btn.disabled = false;
         showNotification('Analysis completed! Check the results below.');
         
-        // Here you would normally show analysis results
-        // For now, we'll just show a success message
       }, 3000);
       
-      // Prevent actual form submission for demo
+      
       e.preventDefault();
     });
 
-    // Initialize the application
+    
     function initApp() {
       loadTheme();
       updateLineNumbers();
       
-      // Set default section
+      
       showSection('analyzer');
       
-      // Show welcome notification
+      
       setTimeout(() => {
         showNotification('Welcome to PyDebug Studio!');
       }, 1000);
     }
 
-    // Start the application when page loads
+    
     document.addEventListener('DOMContentLoaded', initApp);
   </script>
 </body>
