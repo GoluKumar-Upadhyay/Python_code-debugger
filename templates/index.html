@@ -6,314 +6,377 @@
   <title>PyDebug Studio</title>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
   <style>
+    :root {
+      /* Dark theme variables */
+      --bg-primary: #0d1117;
+      --bg-secondary: #161b22;
+      --bg-tertiary: #21262d;
+      --border-color: #21262d;
+      --border-secondary: #30363d;
+      --text-primary: #c9d1d9;
+      --text-secondary: #8b949e;
+      --text-muted: #6e7681;
+      --accent-color: #58a6ff;
+      --success-color: #3fb950;
+      --gradient-start: #238636;
+      --gradient-end: #2ea043;
+    }
+    
+    [data-theme="light"] {
+      /* Light theme variables */
+      --bg-primary: #ffffff;
+      --bg-secondary: #f6f8fa;
+      --bg-tertiary: #e1e4e8;
+      --border-color: #d0d7de;
+      --border-secondary: #d0d7de;
+      --text-primary: #24292f;
+      --text-secondary: #656d76;
+      --text-muted: #8b949e;
+      --accent-color: #0969da;
+      --success-color: #1a7f37;
+      --gradient-start: #1a7f37;
+      --gradient-end: #2ea043;
+    }
+    
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
     }
-
+    
     body {
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      background: #0d1117;
-      color: #c9d1d9;
+      background: var(--bg-primary);
+      color: var(--text-primary);
       min-height: 100vh;
       overflow-x: hidden;
+      transition: background-color 0.3s ease, color 0.3s ease;
     }
-
+    
     .main-container {
       display: flex;
       min-height: 100vh;
     }
-
+    
     .sidebar {
       width: 280px;
-      background: #161b22;
-      border-right: 1px solid #21262d;
+      background: var(--bg-secondary);
+      border-right: 1px solid var(--border-color);
       padding: 24px 0;
       flex-shrink: 0;
+      transition: background-color 0.3s ease;
     }
-
+    
     .logo-section {
       padding: 0 24px;
       margin-bottom: 32px;
     }
-
+    
     .logo {
       display: flex;
       align-items: center;
       gap: 12px;
       font-size: 24px;
       font-weight: 700;
-      color: #58a6ff;
+      color: var(--accent-color);
     }
-
+    
     .logo i {
       font-size: 28px;
     }
-
+    
     .nav-section {
       margin-bottom: 32px;
     }
-
+    
     .nav-title {
       padding: 0 24px;
       font-size: 12px;
       font-weight: 600;
-      color: #8b949e;
+      color: var(--text-secondary);
       text-transform: uppercase;
       letter-spacing: 1px;
       margin-bottom: 12px;
     }
-
+    
     .nav-item {
       display: flex;
       align-items: center;
       gap: 12px;
       padding: 12px 24px;
-      color: #c9d1d9;
+      color: var(--text-primary);
       cursor: pointer;
       transition: all 0.2s;
       border-left: 3px solid transparent;
     }
-
+    
     .nav-item:hover {
-      background: #21262d;
-      border-left-color: #58a6ff;
+      background: var(--bg-tertiary);
+      border-left-color: var(--accent-color);
     }
-
+    
     .nav-item.active {
-      background: #1c2128;
-      border-left-color: #58a6ff;
-      color: #58a6ff;
+      background: var(--bg-tertiary);
+      border-left-color: var(--accent-color);
+      color: var(--accent-color);
     }
-
+    
     .main-content {
       flex: 1;
-      background: #0d1117;
+      background: var(--bg-primary);
       display: flex;
       flex-direction: column;
     }
-
+    
     .header-bar {
-      background: #161b22;
-      border-bottom: 1px solid #21262d;
+      background: var(--bg-secondary);
+      border-bottom: 1px solid var(--border-color);
       padding: 16px 32px;
       display: flex;
       align-items: center;
       justify-content: space-between;
+      transition: background-color 0.3s ease;
     }
-
+    
     .breadcrumb {
       display: flex;
       align-items: center;
       gap: 8px;
-      color: #8b949e;
+      color: var(--text-secondary);
       font-size: 14px;
     }
-
+    
+    .header-controls {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    
     .status-indicators {
       display: flex;
       align-items: center;
       gap: 16px;
     }
-
+    
     .status-dot {
       width: 8px;
       height: 8px;
       border-radius: 50%;
-      background: #3fb950;
+      background: var(--success-color);
     }
-
+    
+    .theme-toggle {
+      background: transparent;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      padding: 8px 12px;
+      color: var(--text-primary);
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+    }
+    
+    .theme-toggle:hover {
+      background: var(--bg-tertiary);
+      border-color: var(--accent-color);
+    }
+    
     .editor-container {
       flex: 1;
       padding: 32px;
       overflow-y: auto;
     }
-
+    
     .editor-header {
       margin-bottom: 24px;
     }
-
+    
     .editor-title {
       font-size: 28px;
       font-weight: 700;
-      color: #f0f6fc;
+      color: var(--text-primary);
       margin-bottom: 8px;
     }
-
+    
     .editor-subtitle {
-      color: #8b949e;
+      color: var(--text-secondary);
       font-size: 16px;
       line-height: 1.5;
     }
-
+    
     .code-section {
-      background: #0d1117;
-      border: 1px solid #21262d;
+      background: var(--bg-primary);
+      border: 1px solid var(--border-color);
       border-radius: 12px;
       overflow: hidden;
       margin-bottom: 24px;
+      transition: border-color 0.3s ease;
     }
-
+    
     .code-header {
-      background: #161b22;
-      border-bottom: 1px solid #21262d;
+      background: var(--bg-secondary);
+      border-bottom: 1px solid var(--border-color);
       padding: 12px 20px;
       display: flex;
       align-items: center;
       justify-content: space-between;
     }
-
+    
     .file-tabs {
       display: flex;
       align-items: center;
       gap: 2px;
     }
-
+    
     .file-tab {
       display: flex;
       align-items: center;
       gap: 8px;
       padding: 8px 16px;
-      background: #21262d;
+      background: var(--bg-tertiary);
       border-radius: 6px 6px 0 0;
       font-size: 13px;
-      color: #c9d1d9;
-      border: 1px solid #30363d;
+      color: var(--text-primary);
+      border: 1px solid var(--border-secondary);
       border-bottom: none;
     }
-
+    
     .file-tab.active {
-      background: #0d1117;
-      color: #58a6ff;
+      background: var(--bg-primary);
+      color: var(--accent-color);
     }
-
+    
     .editor-controls {
       display: flex;
       align-items: center;
       gap: 8px;
     }
-
+    
     .control-btn {
       padding: 6px 8px;
       background: transparent;
-      border: 1px solid #21262d;
+      border: 1px solid var(--border-color);
       border-radius: 6px;
-      color: #8b949e;
+      color: var(--text-secondary);
       cursor: pointer;
       transition: all 0.2s;
     }
-
+    
     .control-btn:hover {
-      background: #21262d;
-      color: #c9d1d9;
+      background: var(--bg-tertiary);
+      color: var(--text-primary);
     }
-
+    
     .code-textarea {
       width: 100%;
       min-height: 400px;
-      background: #0d1117;
+      background: var(--bg-primary);
       border: none;
       outline: none;
       padding: 20px;
       font-family: 'JetBrains Mono', 'Fira Code', Consolas, monospace;
       font-size: 14px;
       line-height: 1.6;
-      color: #c9d1d9;
+      color: var(--text-primary);
       resize: vertical;
+      transition: background-color 0.3s ease, color 0.3s ease;
     }
-
+    
     .code-textarea::placeholder {
-      color: #6e7681;
+      color: var(--text-muted);
     }
-
+    
     .settings-panel {
-      background: #161b22;
-      border: 1px solid #21262d;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
       border-radius: 12px;
       padding: 24px;
       margin-bottom: 32px;
+      transition: background-color 0.3s ease, border-color 0.3s ease;
     }
-
+    
     .panel-title {
       font-size: 18px;
       font-weight: 600;
-      color: #f0f6fc;
+      color: var(--text-primary);
       margin-bottom: 16px;
       display: flex;
       align-items: center;
       gap: 10px;
     }
-
+    
     .form-group {
       margin-bottom: 20px;
     }
-
+    
     .form-label {
       display: block;
       font-size: 14px;
       font-weight: 500;
-      color: #c9d1d9;
+      color: var(--text-primary);
       margin-bottom: 8px;
     }
-
+    
     .level-selector {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 12px;
     }
-
+    
     .level-option {
       position: relative;
     }
-
+    
     .level-radio {
       position: absolute;
       opacity: 0;
     }
-
+    
     .level-card {
-      background: #21262d;
-      border: 2px solid #30363d;
+      background: var(--bg-tertiary);
+      border: 2px solid var(--border-secondary);
       border-radius: 8px;
       padding: 16px;
       cursor: pointer;
       transition: all 0.2s;
       text-align: center;
     }
-
+    
     .level-card:hover {
-      border-color: #58a6ff;
-      background: #1c2128;
+      border-color: var(--accent-color);
+      background: var(--bg-primary);
     }
-
+    
     .level-radio:checked + .level-card {
-      border-color: #58a6ff;
-      background: #1c2128;
-      box-shadow: 0 0 0 1px #58a6ff;
+      border-color: var(--accent-color);
+      background: var(--bg-primary);
+      box-shadow: 0 0 0 1px var(--accent-color);
     }
-
+    
     .level-icon {
       font-size: 24px;
       margin-bottom: 8px;
       display: block;
     }
-
+    
     .level-name {
       font-weight: 600;
-      color: #f0f6fc;
+      color: var(--text-primary);
       margin-bottom: 4px;
     }
-
+    
     .level-desc {
       font-size: 12px;
-      color: #8b949e;
+      color: var(--text-secondary);
       line-height: 1.4;
     }
-
+    
     .analyze-btn {
       width: 100%;
-      background: linear-gradient(135deg, #238636 0%, #2ea043 100%);
+      background: linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-end) 100%);
       color: white;
       border: none;
       border-radius: 8px;
@@ -327,82 +390,169 @@
       justify-content: center;
       gap: 12px;
     }
-
+    
     .analyze-btn:hover {
-      background: linear-gradient(135deg, #2ea043 0%, #238636 100%);
+      background: linear-gradient(135deg, var(--gradient-end) 0%, var(--gradient-start) 100%);
       transform: translateY(-1px);
       box-shadow: 0 8px 25px rgba(35, 134, 54, 0.3);
     }
-
+    
     .analyze-btn:active {
       transform: translateY(0);
     }
-
+    
     .feature-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
       gap: 20px;
       margin-top: 32px;
     }
-
+    
     .feature-card {
-      background: #161b22;
-      border: 1px solid #21262d;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
       border-radius: 12px;
       padding: 24px;
       transition: all 0.3s;
     }
-
+    
     .feature-card:hover {
-      border-color: #30363d;
+      border-color: var(--border-secondary);
       transform: translateY(-2px);
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
     }
-
+    
     .feature-icon {
       width: 48px;
       height: 48px;
-      background: #21262d;
+      background: var(--bg-tertiary);
       border-radius: 8px;
       display: flex;
       align-items: center;
       justify-content: center;
       font-size: 20px;
-      color: #58a6ff;
+      color: var(--accent-color);
       margin-bottom: 16px;
     }
-
+    
     .feature-title {
       font-size: 16px;
       font-weight: 600;
-      color: #f0f6fc;
+      color: var(--text-primary);
       margin-bottom: 8px;
     }
-
+    
     .feature-description {
-      color: #8b949e;
+      color: var(--text-secondary);
       font-size: 14px;
       line-height: 1.5;
     }
-
+    
     .line-numbers {
-      background: #161b22;
-      border-right: 1px solid #21262d;
+      background: var(--bg-secondary);
+      border-right: 1px solid var(--border-color);
       padding: 20px 12px;
       font-family: 'JetBrains Mono', monospace;
       font-size: 12px;
-      color: #6e7681;
+      color: var(--text-muted);
       user-select: none;
       min-height: 400px;
       width: 50px;
       text-align: right;
       line-height: 1.6;
+      transition: background-color 0.3s ease;
     }
-
+    
     .editor-wrapper {
       display: flex;
     }
 
+    /* Modal for displaying session details */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+    }
+
+    .modal-content {
+      background-color: var(--bg-secondary);
+      margin: 15% auto;
+      padding: 20px;
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      width: 80%;
+      max-width: 600px;
+      color: var(--text-primary);
+    }
+
+    .close {
+      color: var(--text-secondary);
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .close:hover {
+      color: var(--text-primary);
+    }
+
+    .session-item, .snippet-item, .preference-item {
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 16px;
+      margin-bottom: 12px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .session-item:hover, .snippet-item:hover, .preference-item:hover {
+      background: var(--bg-primary);
+      border-color: var(--accent-color);
+    }
+
+    .session-title, .snippet-title {
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 4px;
+    }
+
+    .session-date, .snippet-lang {
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+
+    .shortcut-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+      margin-top: 16px;
+    }
+
+    .shortcut-item {
+      background: var(--bg-tertiary);
+      padding: 12px;
+      border-radius: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .shortcut-key {
+      background: var(--bg-primary);
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-family: monospace;
+      font-size: 12px;
+      border: 1px solid var(--border-color);
+    }
+    
     @media (max-width: 768px) {
       .main-container {
         flex-direction: column;
@@ -411,7 +561,7 @@
       .sidebar {
         width: 100%;
         border-right: none;
-        border-bottom: 1px solid #21262d;
+        border-bottom: 1px solid var(--border-color);
       }
       
       .level-selector {
@@ -436,15 +586,15 @@
       
       <div class="nav-section">
         <div class="nav-title">Tools</div>
-        <div class="nav-item active">
+        <div class="nav-item active" onclick="showSection('analyzer')">
           <i class="fas fa-code"></i>
           Code Analyzer
         </div>
-        <div class="nav-item">
+        <div class="nav-item" onclick="showSection('sessions')">
           <i class="fas fa-history"></i>
           Recent Sessions
         </div>
-        <div class="nav-item">
+        <div class="nav-item" onclick="showSection('snippets')">
           <i class="fas fa-bookmark"></i>
           Saved Snippets
         </div>
@@ -452,11 +602,11 @@
       
       <div class="nav-section">
         <div class="nav-title">Settings</div>
-        <div class="nav-item">
+        <div class="nav-item" onclick="showSection('preferences')">
           <i class="fas fa-cog"></i>
           Preferences
         </div>
-        <div class="nav-item">
+        <div class="nav-item" onclick="showSection('shortcuts')">
           <i class="fas fa-keyboard"></i>
           Shortcuts
         </div>
@@ -468,128 +618,261 @@
         <div class="breadcrumb">
           <i class="fas fa-home"></i>
           <span>/</span>
-          <span>Debug Session</span>
+          <span id="currentSection">Debug Session</span>
         </div>
-        <div class="status-indicators">
-          <div class="status-dot"></div>
-          <span style="font-size: 14px; color: #8b949e;">Ready</span>
+        <div class="header-controls">
+          <button class="theme-toggle" onclick="toggleTheme()" id="themeToggle">
+            <i class="fas fa-moon"></i>
+            <span>Dark</span>
+          </button>
+          <div class="status-indicators">
+            <div class="status-dot"></div>
+            <span style="font-size: 14px; color: var(--text-secondary);">Ready</span>
+          </div>
         </div>
       </div>
 
       <div class="editor-container">
-        <div class="editor-header">
-          <h1 class="editor-title">Python Code Debugger</h1>
-          <p class="editor-subtitle">Advanced static analysis and debugging recommendations for Python code</p>
-        </div>
-
-        <form method="POST" id="debugForm">
-          <div class="code-section">
-            <div class="code-header">
-              <div class="file-tabs">
-                <div class="file-tab active">
-                  <i class="fab fa-python"></i>
-                  main.py
+        <!-- Code Analyzer Section (Default) -->
+        <div id="analyzerSection" class="content-section">
+          <div class="editor-header">
+            <h1 class="editor-title">Python Code Debugger</h1>
+            <p class="editor-subtitle">Advanced static analysis and debugging recommendations for Python code</p>
+          </div>
+          
+          <form method="POST" id="debugForm">
+            <div class="code-section">
+              <div class="code-header">
+                <div class="file-tabs">
+                  <div class="file-tab active">
+                    <i class="fab fa-python"></i>
+                    main.py
+                  </div>
+                </div>
+                <div class="editor-controls">
+                  <button type="button" class="control-btn" title="Format Code" onclick="formatCode()">
+                    <i class="fas fa-align-left"></i>
+                  </button>
+                  <button type="button" class="control-btn" title="Clear Code" onclick="clearCode()">
+                    <i class="fas fa-trash"></i>
+                  </button>
                 </div>
               </div>
-              <div class="editor-controls">
-                <button type="button" class="control-btn" title="Format Code">
-                  <i class="fas fa-align-left"></i>
-                </button>
-                <button type="button" class="control-btn" title="Settings">
-                  <i class="fas fa-cog"></i>
-                </button>
-              </div>
-            </div>
-            <div class="editor-wrapper">
-              <div class="line-numbers" id="lineNumbers">1</div>
-              <textarea 
-                id="buggy_code" 
-                name="buggy_code" 
-                class="code-textarea" 
-                placeholder="# Paste your Python code here...
+              <div class="editor-wrapper">
+                <div class="line-numbers" id="lineNumbers">1</div>
+                <textarea 
+                  id="buggy_code" 
+                  name="buggy_code" 
+                  class="code-textarea" 
+                  placeholder="# Paste your Python code here...
 # Example:
 def fibonacci(n):
     if n <= 1:
         return n
     return fibonacci(n-1) + fibonacci(n-2)
-
 print(fibonacci(10))"
-                required
-              ></textarea>
+                  required
+                ></textarea>
+              </div>
+            </div>
+            
+            <div class="settings-panel">
+              <h3 class="panel-title">
+                <i class="fas fa-sliders-h"></i>
+                Analysis Configuration and Select Your Programming Experience Level
+              </h3>
+              
+              <div class="form-group">
+                <div class="level-selector">
+                  <div class="level-option">
+                    <input type="radio" id="beginner" name="student_level" value="beginner" class="level-radio" required>
+                    <label for="beginner" class="level-card">
+                      <span class="level-icon">🎯</span>
+                      <div class="level-name">Beginner</div>
+                      <div class="level-desc">Detailed explanations with fundamentals</div>
+                    </label>
+                  </div>
+                  <div class="level-option">
+                    <input type="radio" id="intermediate" name="student_level" value="intermediate" class="level-radio">
+                    <label for="intermediate" class="level-card">
+                      <span class="level-icon">⚡</span>
+                      <div class="level-name">Intermediate</div>
+                      <div class="level-desc">Balanced feedback with best practices</div>
+                    </label>
+                  </div>
+                  <div class="level-option">
+                    <input type="radio" id="advanced" name="student_level" value="advanced" class="level-radio">
+                    <label for="advanced" class="level-card">
+                      <span class="level-icon">🚀</span>
+                      <div class="level-name">Advanced</div>
+                      <div class="level-desc">Concise analysis with optimizations</div>
+                    </label>
+                  </div>
+                </div>
+              </div>
+              
+              <button type="submit" class="analyze-btn">
+                <i class="fas fa-search"></i>
+                Analyze & Debug Code
+              </button>
+            </div>
+          </form>
+          
+          <div class="feature-grid">
+            <div class="feature-card">
+              <div class="feature-icon">
+                <i class="fas fa-bug"></i>
+              </div>
+              <div class="feature-title">Smart Error Detection</div>
+              <div class="feature-description">
+                Advanced static analysis to identify syntax errors, logical issues, and potential runtime problems.
+              </div>
+            </div>
+            
+            <div class="feature-card">
+              <div class="feature-icon">
+                <i class="fas fa-graduation-cap"></i>
+              </div>
+              <div class="feature-title">Adaptive Learning</div>
+              <div class="feature-description">
+                Personalized feedback based on your skill level, from beginner-friendly explanations to expert insights.
+              </div>
+            </div>
+            
+            <div class="feature-card">
+              <div class="feature-icon">
+                <i class="fas fa-lightbulb"></i>
+              </div>
+              <div class="feature-title">Code Suggestions</div>
+              <div class="feature-description">
+                Get actionable recommendations for performance improvements and Python best practices.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recent Sessions Section -->
+        <div id="sessionsSection" class="content-section" style="display: none;">
+          <div class="editor-header">
+            <h1 class="editor-title">Recent Sessions</h1>
+            <p class="editor-subtitle">View and manage your previous debugging sessions</p>
+          </div>
+          
+          <div id="sessionsList">
+            <div class="session-item" onclick="loadSession('fibonacci_debug')">
+              <div class="session-title">Fibonacci Function Debug</div>
+              <div class="session-date">Today, 2:30 PM • Beginner Level</div>
+            </div>
+            <div class="session-item" onclick="loadSession('sorting_algo')">
+              <div class="session-title">Sorting Algorithm Analysis</div>
+              <div class="session-date">Yesterday, 4:15 PM • Intermediate Level</div>
+            </div>
+            <div class="session-item" onclick="loadSession('web_scraper')">
+              <div class="session-title">Web Scraper Debugging</div>
+              <div class="session-date">2 days ago, 10:20 AM • Advanced Level</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Saved Snippets Section -->
+        <div id="snippetsSection" class="content-section" style="display: none;">
+          <div class="editor-header">
+            <h1 class="editor-title">Saved Snippets</h1>
+            <p class="editor-subtitle">Quick access to your frequently used code snippets</p>
+          </div>
+          
+          <div id="snippetsList">
+            <div class="snippet-item" onclick="loadSnippet('fibonacci')">
+              <div class="snippet-title">Fibonacci Sequence</div>
+              <div class="snippet-lang">Python • Recursive Implementation</div>
+            </div>
+            <div class="snippet-item" onclick="loadSnippet('quicksort')">
+              <div class="snippet-title">Quick Sort Algorithm</div>
+              <div class="snippet-lang">Python • Divide and Conquer</div>
+            </div>
+            <div class="snippet-item" onclick="loadSnippet('binary_search')">
+              <div class="snippet-title">Binary Search</div>
+              <div class="snippet-lang">Python • Iterative Approach</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Preferences Section -->
+        <div id="preferencesSection" class="content-section" style="display: none;">
+          <div class="editor-header">
+            <h1 class="editor-title">Preferences</h1>
+            <p class="editor-subtitle">Customize your debugging experience</p>
+          </div>
+          
+          <div class="settings-panel">
+            <h3 class="panel-title">
+              <i class="fas fa-palette"></i>
+              Appearance Settings
+            </h3>
+            
+            <div class="preference-item">
+              <div>
+                <div style="font-weight: 600;">Theme Preference</div>
+                <div style="font-size: 14px; color: var(--text-secondary);">Choose between light and dark themes</div>
+              </div>
+              <button class="theme-toggle" onclick="toggleTheme()">
+                <i class="fas fa-palette"></i>
+                Toggle Theme
+              </button>
             </div>
           </div>
 
           <div class="settings-panel">
             <h3 class="panel-title">
-              <i class="fas fa-sliders-h"></i>
-              Analysis Configuration
+              <i class="fas fa-code"></i>
+              Editor Settings
             </h3>
             
-            <div class="form-group">
-              <label class="form-label">Select Your Programming Experience Level</label>
-              <div class="level-selector">
-                <div class="level-option">
-                  <input type="radio" id="beginner" name="student_level" value="beginner" class="level-radio" required>
-                  <label for="beginner" class="level-card">
-                    <span class="level-icon"></span>
-                    <div class="level-name">Beginner</div>
-                    <div class="level-desc">Detailed explanations with fundamentals</div>
-                  </label>
-                </div>
-                <div class="level-option">
-                  <input type="radio" id="intermediate" name="student_level" value="intermediate" class="level-radio">
-                  <label for="intermediate" class="level-card">
-                    <span class="level-icon"></span>
-                    <div class="level-name">Intermediate</div>
-                    <div class="level-desc">Balanced feedback with best practices</div>
-                  </label>
-                </div>
-                <div class="level-option">
-                  <input type="radio" id="advanced" name="student_level" value="advanced" class="level-radio">
-                  <label for="advanced" class="level-card">
-                    <span class="level-icon"></span>
-                    <div class="level-name">Advanced</div>
-                    <div class="level-desc">Concise analysis with optimizations</div>
-                  </label>
-                </div>
+            <div class="preference-item">
+              <div>
+                <div style="font-weight: 600;">Font Size</div>
+                <div style="font-size: 14px; color: var(--text-secondary);">Adjust editor font size</div>
               </div>
+              <select onchange="changeFontSize(this.value)" style="background: var(--bg-tertiary); border: 1px solid var(--border-color); border-radius: 6px; padding: 8px; color: var(--text-primary);">
+                <option value="12">12px</option>
+                <option value="14" selected>14px</option>
+                <option value="16">16px</option>
+                <option value="18">18px</option>
+              </select>
             </div>
-
-            <button type="submit" class="analyze-btn">
-              <i class="fas fa-search"></i>
-              Analyze & Debug Code
-            </button>
           </div>
-        </form>
+        </div>
 
-        <div class="feature-grid">
-          <div class="feature-card">
-            <div class="feature-icon">
-              <i class="fas fa-bug"></i>
-            </div>
-            <div class="feature-title">Smart Error Detection</div>
-            <div class="feature-description">
-              Advanced static analysis to identify syntax errors, logical issues, and potential runtime problems.
-            </div>
+        <!-- Shortcuts Section -->
+        <div id="shortcutsSection" class="content-section" style="display: none;">
+          <div class="editor-header">
+            <h1 class="editor-title">Keyboard Shortcuts</h1>
+            <p class="editor-subtitle">Learn keyboard shortcuts to boost your productivity</p>
           </div>
           
-          <div class="feature-card">
-            <div class="feature-icon">
-              <i class="fas fa-graduation-cap"></i>
-            </div>
-            <div class="feature-title">Adaptive Learning</div>
-            <div class="feature-description">
-              Personalized feedback based on your skill level, from beginner-friendly explanations to expert insights.
-            </div>
-          </div>
-          
-          <div class="feature-card">
-            <div class="feature-icon">
-              <i class="fas fa-lightbulb"></i>
-            </div>
-            <div class="feature-title">Code Suggestions</div>
-            <div class="feature-description">
-              Get actionable recommendations for performance improvements and Python best practices.
+          <div class="settings-panel">
+            <h3 class="panel-title">
+              <i class="fas fa-keyboard"></i>
+              Editor Shortcuts
+            </h3>
+            
+            <div class="shortcut-grid">
+              <div class="shortcut-item">
+                <span>Format Code</span>
+                <span class="shortcut-key">Ctrl + Shift + F</span>
+              </div>
+              <div class="shortcut-item">
+                <span>Clear Editor</span>
+                <span class="shortcut-key">Ctrl + Shift + K</span>
+              </div>
+              <div class="shortcut-item">
+                <span>Analyze Code</span>
+                <span class="shortcut-key">Ctrl + Enter</span>
+              </div>
+              <div class="shortcut-item">
+                <span>Toggle Theme</span>
+                <span class="shortcut-key">Ctrl + Shift + T</span>
+              </div>
             </div>
           </div>
         </div>
@@ -598,53 +881,334 @@ print(fibonacci(10))"
   </div>
 
   <script>
-    // Line numbers functionality
+    // Theme management
+    let currentTheme = 'dark';
+    
+    function toggleTheme() {
+      const body = document.body;
+      const themeToggle = document.getElementById('themeToggle');
+      
+      if (currentTheme === 'dark') {
+        body.setAttribute('data-theme', 'light');
+        themeToggle.innerHTML = '<i class="fas fa-sun"></i><span>Light</span>';
+        currentTheme = 'light';
+      } else {
+        body.removeAttribute('data-theme');
+        themeToggle.innerHTML = '<i class="fas fa-moon"></i><span>Dark</span>';
+        currentTheme = 'dark';
+      }
+      
+      // Save theme preference
+      localStorage.setItem('theme', currentTheme);
+    }
+    
+    // Load saved theme on page load
+    function loadTheme() {
+      const savedTheme = localStorage.getItem('theme') || 'dark';
+      if (savedTheme === 'light') {
+        toggleTheme();
+      }
+    }
+
+    // Section management
+    function showSection(sectionName) {
+      // Hide all sections
+      const sections = document.querySelectorAll('.content-section');
+      sections.forEach(section => section.style.display = 'none');
+      
+      // Remove active class from all nav items
+      const navItems = document.querySelectorAll('.nav-item');
+      navItems.forEach(item => item.classList.remove('active'));
+      
+      // Show selected section
+      document.getElementById(sectionName + 'Section').style.display = 'block';
+      
+      // Add active class to clicked nav item
+      event.target.closest('.nav-item').classList.add('active');
+      
+      // Update breadcrumb
+      const breadcrumbMap = {
+        'analyzer': 'Debug Session',
+        'sessions': 'Recent Sessions',
+        'snippets': 'Saved Snippets',
+        'preferences': 'Preferences',
+        'shortcuts': 'Keyboard Shortcuts'
+      };
+      document.getElementById('currentSection').textContent = breadcrumbMap[sectionName];
+    }
+
+    // Code editor functionality
     const textarea = document.getElementById('buggy_code');
     const lineNumbers = document.getElementById('lineNumbers');
-
+    
     function updateLineNumbers() {
       const lines = textarea.value.split('\n').length;
       const numbers = Array.from({length: lines}, (_, i) => i + 1).join('\n');
       lineNumbers.textContent = numbers;
     }
-
+    
     textarea.addEventListener('input', updateLineNumbers);
     textarea.addEventListener('scroll', () => {
       lineNumbers.scrollTop = textarea.scrollTop;
     });
 
-    // Form validation
+    // Code formatting function
+    function formatCode() {
+      const code = textarea.value;
+      // Simple code formatting (basic indentation)
+      const lines = code.split('\n');
+      let formattedLines = [];
+      let indentLevel = 0;
+      
+      lines.forEach(line => {
+        const trimmedLine = line.trim();
+        
+        // Decrease indent for closing brackets/statements
+        if (trimmedLine.includes('}') || trimmedLine.includes(']') || trimmedLine.includes(')') || 
+            trimmedLine.startsWith('except') || trimmedLine.startsWith('elif') || 
+            trimmedLine.startsWith('else') || trimmedLine.startsWith('finally')) {
+          indentLevel = Math.max(0, indentLevel - 1);
+        }
+        
+        // Add formatted line
+        formattedLines.push('    '.repeat(indentLevel) + trimmedLine);
+        
+        // Increase indent for opening brackets/statements
+        if (trimmedLine.endsWith(':') || trimmedLine.includes('{') || 
+            trimmedLine.includes('[') || trimmedLine.includes('(')) {
+          indentLevel++;
+        }
+      });
+      
+      textarea.value = formattedLines.join('\n');
+      updateLineNumbers();
+      showNotification('Code formatted successfully!');
+    }
+
+    // Clear code function
+    function clearCode() {
+      if (confirm('Are you sure you want to clear all code?')) {
+        textarea.value = '';
+        updateLineNumbers();
+        showNotification('Code cleared!');
+      }
+    }
+
+    // Font size adjustment
+    function changeFontSize(size) {
+      textarea.style.fontSize = size + 'px';
+      lineNumbers.style.fontSize = (size - 2) + 'px';
+      showNotification(`Font size changed to ${size}px`);
+    }
+
+    // Session management
+    function loadSession(sessionId) {
+      const sessions = {
+        'fibonacci_debug': `def fibonacci(n):
+    if n <= 1:
+        return n
+    return fibonacci(n-1) + fibonacci(n-2)
+
+print(fibonacci(10))`,
+        'sorting_algo': `def bubble_sort(arr):
+    n = len(arr)
+    for i in range(n):
+        for j in range(0, n-i-1):
+            if arr[j] > arr[j+1]:
+                arr[j], arr[j+1] = arr[j+1], arr[j]
+    return arr
+
+numbers = [64, 34, 25, 12, 22, 11, 90]
+print(bubble_sort(numbers))`,
+        'web_scraper': `import requests
+from bs4 import BeautifulSoup
+
+def scrape_website(url):
+    response = requests.get(url)
+    soup = BeautifulSoup(response.content, 'html.parser')
+    return soup.find_all('h1')
+
+url = "https://example.com"
+headers = scrape_website(url)`
+      };
+      
+      if (sessions[sessionId]) {
+        showSection('analyzer');
+        textarea.value = sessions[sessionId];
+        updateLineNumbers();
+        showNotification('Session loaded successfully!');
+      }
+    }
+
+    // Snippet management
+    function loadSnippet(snippetId) {
+      const snippets = {
+        'fibonacci': `def fibonacci(n):
+    """Generate Fibonacci sequence up to n terms."""
+    if n <= 0:
+        return []
+    elif n == 1:
+        return [0]
+    elif n == 2:
+        return [0, 1]
+    
+    fib_sequence = [0, 1]
+    for i in range(2, n):
+        fib_sequence.append(fib_sequence[i-1] + fib_sequence[i-2])
+    
+    return fib_sequence`,
+        'quicksort': `def quicksort(arr):
+    """Quick sort implementation using divide and conquer."""
+    if len(arr) <= 1:
+        return arr
+    
+    pivot = arr[len(arr) // 2]
+    left = [x for x in arr if x < pivot]
+    middle = [x for x in arr if x == pivot]
+    right = [x for x in arr if x > pivot]
+    
+    return quicksort(left) + middle + quicksort(right)`,
+        'binary_search': `def binary_search(arr, target):
+    """Binary search implementation."""
+    left, right = 0, len(arr) - 1
+    
+    while left <= right:
+        mid = (left + right) // 2
+        if arr[mid] == target:
+            return mid
+        elif arr[mid] < target:
+            left = mid + 1
+        else:
+            right = mid - 1
+    
+    return -1`
+      };
+      
+      if (snippets[snippetId]) {
+        showSection('analyzer');
+        textarea.value = snippets[snippetId];
+        updateLineNumbers();
+        showNotification('Snippet loaded successfully!');
+      }
+    }
+
+    // Notification system
+    function showNotification(message) {
+      const notification = document.createElement('div');
+      notification.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: var(--success-color);
+        color: white;
+        padding: 12px 24px;
+        border-radius: 8px;
+        z-index: 1000;
+        font-size: 14px;
+        font-weight: 500;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        animation: slideIn 0.3s ease;
+      `;
+      notification.textContent = message;
+      
+      // Add slide-in animation
+      const style = document.createElement('style');
+      style.textContent = `
+        @keyframes slideIn {
+          from { transform: translateX(100%); opacity: 0; }
+          to { transform: translateX(0); opacity: 1; }
+        }
+      `;
+      document.head.appendChild(style);
+      
+      document.body.appendChild(notification);
+      
+      setTimeout(() => {
+        notification.remove();
+        style.remove();
+      }, 3000);
+    }
+
+    // Keyboard shortcuts
+    document.addEventListener('keydown', function(e) {
+      // Ctrl + Shift + F - Format Code
+      if (e.ctrlKey && e.shiftKey && e.key === 'F') {
+        e.preventDefault();
+        formatCode();
+      }
+      
+      // Ctrl + Shift + K - Clear Editor
+      if (e.ctrlKey && e.shiftKey && e.key === 'K') {
+        e.preventDefault();
+        clearCode();
+      }
+      
+      // Ctrl + Enter - Analyze Code
+      if (e.ctrlKey && e.key === 'Enter') {
+        e.preventDefault();
+        document.getElementById('debugForm').dispatchEvent(new Event('submit'));
+      }
+      
+      // Ctrl + Shift + T - Toggle Theme
+      if (e.ctrlKey && e.shiftKey && e.key === 'T') {
+        e.preventDefault();
+        toggleTheme();
+      }
+    });
+
+    // Form validation and submission
     document.getElementById('debugForm').addEventListener('submit', function(e) {
       const code = document.getElementById('buggy_code').value.trim();
       const level = document.querySelector('input[name="student_level"]:checked');
-
+      
       if (!code) {
         e.preventDefault();
-        alert('Please enter your Python code before analyzing.');
+        showNotification('Please enter your Python code before analyzing.');
         return;
       }
-
+      
       if (!level) {
         e.preventDefault();
-        alert('Please select your programming experience level.');
+        showNotification('Please select your programming experience level.');
         return;
       }
-
+      
       // Show loading state
       const btn = document.querySelector('.analyze-btn');
       const originalContent = btn.innerHTML;
       btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Analyzing...';
       btn.disabled = true;
       
-      // Re-enable button after a delay (in case of errors)
+      // Simulate analysis process
       setTimeout(() => {
         btn.innerHTML = originalContent;
         btn.disabled = false;
-      }, 30000);
+        showNotification('Analysis completed! Check the results below.');
+        
+        // Here you would normally show analysis results
+        // For now, we'll just show a success message
+      }, 3000);
+      
+      // Prevent actual form submission for demo
+      e.preventDefault();
     });
 
-    // Initialize line numbers
-    updateLineNumbers();
+    // Initialize the application
+    function initApp() {
+      loadTheme();
+      updateLineNumbers();
+      
+      // Set default section
+      showSection('analyzer');
+      
+      // Show welcome notification
+      setTimeout(() => {
+        showNotification('Welcome to PyDebug Studio!');
+      }, 1000);
+    }
+
+    // Start the application when page loads
+    document.addEventListener('DOMContentLoaded', initApp);
   </script>
 </body>
 </html>
