@@ -938,8 +938,7 @@ print(fibonacci(10))"
     }
 
     
-    const textarea = document.getElementById('buggy_code');
-    const lineNumbers = document.getElementById('lineNumbers');
+    
     
     function updateLineNumbers() {
       const lines = textarea.value.split('\n').length;
@@ -1155,53 +1154,49 @@ headers = scrape_website(url)`
     });
 
     
+    const textarea = document.getElementById('buggy_code');
+    const lineNumbers = document.getElementById('lineNumbers');
+
+    function updateLineNumbers() {
+      const lines = textarea.value.split('\n').length;
+      const numbers = Array.from({length: lines}, (_, i) => i + 1).join('\n');
+      lineNumbers.textContent = numbers;
+    }
+
+    textarea.addEventListener('input', updateLineNumbers);
+    textarea.addEventListener('scroll', () => {
+      lineNumbers.scrollTop = textarea.scrollTop;
+    });
+
+    // Form validation
     document.getElementById('debugForm').addEventListener('submit', function(e) {
       const code = document.getElementById('buggy_code').value.trim();
       const level = document.querySelector('input[name="student_level"]:checked');
-      
+
       if (!code) {
         e.preventDefault();
-        showNotification('Please enter your Python code before analyzing.');
+        alert('Please enter your Python code before analyzing.');
         return;
       }
-      
+
       if (!level) {
         e.preventDefault();
-        showNotification('Please select your programming experience level.');
+        alert('Please select your programming experience level.');
         return;
       }
-      
-      
+
+      // Show loading state
       const btn = document.querySelector('.analyze-btn');
       const originalContent = btn.innerHTML;
       btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Analyzing...';
       btn.disabled = true;
       
-     
+      // Re-enable button after a delay (in case of errors)
       setTimeout(() => {
         btn.innerHTML = originalContent;
         btn.disabled = false;
-        showNotification('Analysis completed! Check the results below.');
-        
-      }, 3000);
-      
-      
-      e.preventDefault();
+      }, 30000);
     });
-
-    
-    function initApp() {
-      loadTheme();
-      updateLineNumbers();
-      
-      
-      showSection('analyzer');
-      
-      
-      setTimeout(() => {
-        showNotification('Welcome to PyDebug Studio!');
-      }, 1000);
-    }
 
     
     document.addEventListener('DOMContentLoaded', initApp);
